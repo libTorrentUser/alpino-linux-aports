@@ -4,6 +4,13 @@
 ::sysinit:/sbin/openrc boot
 ::wait:/sbin/openrc default
 
+# calls a script named "alpine-linux-initialize.sh" that could be either
+# inside a USB stick or a CDROM. The idea is to allow the user of live
+# Alpine Linux to quickly modify the .iso and add a script than can 
+# perform whatever initialization he requires whenever the live system
+# boots.
+::sysinit:if [ -e "/media/usb/alpine-linux-initialize.sh" ]; then "/media/usb/alpine-linux-initialize.sh else "/media/cdrom/alpine-linux-initialize.sh" fi
+
 # Set up a couple of getty's
 tty1::respawn:/sbin/getty 38400 tty1
 tty2::respawn:/sbin/getty 38400 tty2

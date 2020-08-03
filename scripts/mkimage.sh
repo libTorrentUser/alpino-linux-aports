@@ -66,8 +66,7 @@ options:
 --hostkeys		Copy system apk signing keys to created images
 --outdir		Specify directory for the created images
 --profile		Specify which profiles to build
---repository		Package repository to use for the image create
---extra-repository	Add repository to search packages from
+--repository		Package repository to use for the image create (you can use --repository more than once to specify multiple repositories)
 --simulate		Don't execute commands
 --tag			Build images for tag RELEASE
 --workdir		Specify temporary working directory (cache)
