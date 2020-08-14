@@ -4,7 +4,7 @@
 ::sysinit:/sbin/openrc boot
 ::wait:/sbin/openrc default
 
-::sysinit:/bin/sh -c "for _d in "/media/usb" "/media/cdrom"; do _f="$_d/ali/init.sh"; if [ -e $_f ]; then $_f; break; fi done && exit"
+::sysinit:/bin/sh -c 'for _d in "/media/usb" "/media/cdrom"; do _f="$_d/ali/init.sh"; if [ -e $_f ]; then $_f; break; fi done && exit'
 
 # Set up a couple of getty's
 tty1::respawn:/sbin/getty 38400 tty1
