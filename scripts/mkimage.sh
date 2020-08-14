@@ -34,6 +34,9 @@ scriptdir="$(dirname $0)"
 OUTDIR="$PWD"
 RELEASE="${build_date}"
 
+# if set, all files from this directory will be copied to a directory called "ali"
+ALPINE_LINUX_INITIALIZE_DIR=""
+
 
 msg() {
 	if [ -n "$quiet" ]; then return 0; fi
@@ -58,6 +61,8 @@ usage() {
 $0	[--tag RELEASE] [--outdir OUTDIR] [--workdir WORKDIR]
 		[--arch ARCH] [--profile PROFILE] [--hostkeys] [--simulate]
 		[--repository REPO] [--extra-repository REPO] [--yaml FILE]
+		[--ali-dir DIR]
+		[--ali-script SCRIPT]
 $0	--help
 
 options:
@@ -71,6 +76,8 @@ options:
 --tag			Build images for tag RELEASE
 --workdir		Specify temporary working directory (cache)
 --yaml
+--ali-dir               All files from this dir will be copied to "/ali" in the created image. The system will then call "/ali/init.sh" on boot (see /etc/inittab), thus allowing you to perform any sort of custom initialization when the booting a live media.
+
 
 known profiles: $(echo $all_profiles | sort -u)
 
@@ -217,6 +224,7 @@ while [ $# -gt 0 ]; do
 	--simulate) _simulate="yes";;
 	--checksum) _checksum="yes";;
 	--yaml) _yaml="yes";;
+	--ali-dir) ALPINE_LINUX_INITIALIZE_DIR="$1"; shift ;;
 	--help) usage; exit 0;;
 	--) break ;;
 	-*) usage; exit 1;;
