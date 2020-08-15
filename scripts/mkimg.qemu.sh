@@ -1,6 +1,6 @@
 profile_qemu() {
 	title="QEMU"
-	desc="Alpine standard plus QEMU and MPV, under DWM"
+	desc="Alpine with QEMU and MPV, under DWM"
 	profile_base
 	profile_abbrev="qemu"
 	image_ext="iso"
