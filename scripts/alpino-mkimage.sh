@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # usage 
 # alpine-mkimage.sh alpine-initialize-dir profile
 #
@@ -9,11 +11,33 @@
 # buil a virt Alpine Linux image and copy all files from /dir/a to /ali
 # alpino-mkimage.sh /dir/a virt
 
+
+# first we ensure our customized version of alpine-baselayout is built. The
+# modified inittab file is there, and it is pretty much the most important
+# change we made. It is the inittab file the one that calls the user defined
+# initialization script (the ali/init.sh file)
+cd ../main/alpine-baselayout
+abuild
+
+# get the version and then extract only the major.minor digits, because
+# that is what goes inside the official repositories URLs
+_version=$(grep 'pkgver=' ../alpine-base/APKBUILD)
+_version=$(echo $_version | sed 's/.*=\([0-9]\+.[0-9]\+\).*/\1/')
+
+# and now use that version to create the URL
+_officialRepositoryURL="http://dl-cdn.alpinelinux.org/alpine/v${_version}"
+echo $_officialRepositoryURL
+_repoMain="${_officialRepositoryURL}/main"
+echo $_repoMain
+
+# finally, build the live image
+cd ../../scripts
 ./mkimage.sh \
 	--ali-dir "$1" \
 	--profile "$2" \
 	--outdir /tmp/iso \
+	--workdir /tmp/work \
 	--repository /tmp/packages/main \
-	--repository http://dl-cdn.alpinelinux.org/alpine/v3.12/main \
-	--repository http://dl-cdn.alpinelinux.org/alpine/v3.12/community \
+	--repository "${_officialRepositoryURL}/main" \
+	--repository "${_officialRepositoryURL}/community" \
 	--arch x86_64
