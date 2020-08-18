@@ -26,9 +26,6 @@ _version=$(echo $_version | sed 's/.*=\([0-9]\+.[0-9]\+\).*/\1/')
 
 # and now use that version to create the URL
 _officialRepositoryURL="http://dl-cdn.alpinelinux.org/alpine/v${_version}"
-echo $_officialRepositoryURL
-_repoMain="${_officialRepositoryURL}/main"
-echo $_repoMain
 
 # finally, build the live image
 cd ../../scripts
