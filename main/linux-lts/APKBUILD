@@ -109,11 +109,14 @@ oldconfig() {
 		make -C "$srcdir"/linux-$_kernver \
 			O="$_builddir" \
 			ARCH="$_carch" \
-			listnewconfig oldconfig
+			olddefconfig
 	done
 }
 
 build() {
+	# update the kernel makefile, forcing it to use -march and -mtune == native
+	sed -i 's/march=k8\|march=nocona\|mtune=generic/march=native mtune=native/' "$srcdir"/linux-$_kernver/arch/x86/Makefile
+
 	unset LDFLAGS
 	export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EPOCH})"
 	for i in $_flavors; do
