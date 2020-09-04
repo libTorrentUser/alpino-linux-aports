@@ -19,6 +19,10 @@
 cd ../main/alpine-baselayout
 abuild
 
+# now build a kernel optimized for the current machine
+cd ../linux-lts
+abuild -rd
+
 # get the version and then extract only the major.minor digits, because
 # that is what goes inside the official repositories URLs
 _version=$(grep 'pkgver=' ../alpine-base/APKBUILD)
