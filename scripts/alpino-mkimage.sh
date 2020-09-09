@@ -8,8 +8,9 @@
 # build a standard Alpine Linux image and copy all files from /tmp/somedir to /ali
 # alpino-mkimage.sh /tmp/somedir/ standard
 
-# buil a virt Alpine Linux image and copy all files from /dir/a to /ali
+# build a virt Alpine Linux image and copy all files from /dir/a to /ali
 # alpino-mkimage.sh /dir/a virt
+
 
 
 # first we ensure our customized version of alpine-baselayout is built. The
@@ -19,9 +20,6 @@
 cd ../main/alpine-baselayout
 abuild
 
-# now build a kernel optimized for the current machine
-cd ../linux-lts
-abuild -rd
 
 # get the version and then extract only the major.minor digits, because
 # that is what goes inside the official repositories URLs

@@ -12,8 +12,12 @@ pkgdesc="Linux lts kernel"
 url="https://www.kernel.org"
 depends="mkinitfs"
 _depends_dev="perl gmp-dev elfutils-dev bash flex bison"
-makedepends="$_depends_dev sed installkernel bc linux-headers linux-firmware-any openssl-dev
-	diffutils"
+
+# 'linux-firmware-any' is also a dependency in the official Alpine Linux build,
+# but that package is not needed and it will break the build if you are 
+# executing abuild on a live system
+makedepends="$_depends_dev sed installkernel bc linux-headers openssl-dev diffutils"
+
 options="!strip"
 _config=${config:-config-lts.${CARCH}}
 install=
@@ -33,6 +37,8 @@ source="https://cdn.kernel.org/pub/linux/kernel/v${pkgver%%.*}.x/linux-$_kernver
 	config-virt.armv7
 	config-virt.x86
 	config-virt.x86_64
+
+	config-custom.x86_64
 	"
 subpackages="$pkgname-dev:_dev:$CBUILD_ARCH"
 _flavors=
@@ -109,7 +115,7 @@ oldconfig() {
 		make -C "$srcdir"/linux-$_kernver \
 			O="$_builddir" \
 			ARCH="$_carch" \
-			olddefconfig
+			listnewconfig oldconfig
 	done
 }
 
@@ -172,6 +178,10 @@ virt() {
 	_package virt "$subpkgdir"
 }
 
+custom() {
+	_package custom "$subpkgdir"
+}
+
 _dev() {
 	local _flavor=$(echo $subpkgname | sed -E 's/(^linux-|-dev$)//g')
 	local _abi_release=${pkgver}-${pkgrel}-$_flavor
@@ -224,18 +234,3 @@ _dev() {
 		"$subpkgdir"/lib/modules/${_abi_release}/build
 }
 
-sha512sums="9f60f77e8ab972b9438ac648bed17551c8491d6585a5e85f694b2eaa4c623fbc61eb18419b2656b6795eac5deec0edaa04547fc6723fbda52256bd7f3486898f  linux-5.4.tar.xz
-d19365fe94431008768c96a2c88955652f70b6df6677457ee55ee95246a64fdd2c6fed9b3bef37c29075178294a7fc91f148ead636382530ebfa822be4ad8c2f  0002-powerpc-config-defang-gcc-check-for-stack-protector-.patch
-02dce3a58b21c001655032d14f5ecb33347a823061d5eb0b2b085f3b3598ba066e0cfdc99c2dfb915a69ed20028251285ba5a8cfe5ba19d60b85f4b684d7a9ee  config-lts.aarch64
-d9db5d29d6bbec5005d1de1552c2eb5f6f63fc848d15a938dbbb6e6e4267e07760d01c14f98c5dd429d477b8f5afd1025cda4ff27dd9612e356895c6a746ba81  config-lts.armv7
-3a95268cfa31eaf4a7730e478043ddd3d260c990339daa5da7515ece6aa76882907cb3a3c6128da95b5daecdcc3a9bbecce73d73b06f62e2c780170904e421b7  config-lts.x86
-4a7a80f859be00d892192f37e5f894bb472404e5422f1b592c80c7dfeb35c4123ac0c6127078a39f1d51c082aa3d0592d85407dfe447c15aa0b26d49428ede83  config-lts.x86_64
-bd2edcba4d39f35760ec78b01790388e07b97160dec5b2b5d613108d7477c8e8267c768039102c60efc69db4c259ea95928acc6521cbf3b02ada4e791260aa0b  config-lts.ppc64le
-f153aab0ae56bf1e48afc53e0f312eba4a616a0f36719e3382213c7acaf815b1a6e10558ce9170de9d3d12936ead92102b89be1e09aa881ec1e9daf16148e001  config-lts.s390x
-feb5724d64610fd34cbf28a98fd8daeb0cfba4d197c7156cd1078ab6a8e34ec3382487090f984224c810176da27fceeaaeb61b6635ca3ea69ffdf5d227b4bd29  config-lts.mips64
-b5e8671accbbac759c7c354592f92e843bffdfca33e17a4e05f54072b6cca53b12fa745b91893fb7d77eb347517edddb0b9002b189373e86afb19ba47afc52a9  config-lts.mips
-75e4c843874a5ce05593818459382c735fb71216c2cf9c76f32d58f56639262b51dbfbe370b5fb597f361f5e2c00e481419cd8ad2c501abd327b34d688cb815f  config-virt.aarch64
-f4d518802a94a93b94b5441050056f5fb43cdcf848ecd2b63d00206caf3803a40cf42bbb39bff1a2e9137fef3a21619ab5e70c003c802e85856b8ebd7d531c9b  config-virt.armv7
-eab4db372882dc322a766f1d2bb9c0b9b506924efa1491cf07a85b8f820cc9ea8d43b974a7b6cda3e05842aab1bf78ae30dc5657530be47bcae7367ed8911e58  config-virt.x86
-5e2658b4a7754acaf359de4ffcf4eff7bd31b9f8668e89800f25f322df3b5a4ba32c721ebc7fb3211f737bb71207bec48e6b7578e1742f5d7bbf2322a6caf298  config-virt.x86_64
-8c68bd5b4137c4d6d58bf9c9d3d7ef34bcdc8eff73961926d19a91faabe94f9eec5154cce2aba27d3d0bca352c490c9283f106f335e3f333137e7448515fea75  patch-5.4.43.xz"
