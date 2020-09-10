@@ -13,10 +13,17 @@ url="https://www.kernel.org"
 depends="mkinitfs"
 _depends_dev="perl gmp-dev elfutils-dev bash flex bison"
 
-# 'linux-firmware-any' is also a dependency in the official Alpine Linux build,
-# but that package is not needed and it will break the build if you are 
-# executing abuild on a live system
-makedepends="$_depends_dev sed installkernel bc linux-headers openssl-dev diffutils"
+# 'linux-firmware-any' is not really needed and it will break the build if you are 
+# executing 'abuild -r' on a live system. On a live system you have two choices
+# - install 'linux-firmware-none'
+# - manually install all dependencies except that one and use 'abuild -rd'
+#
+# I believe that package is only needed in order to ensure the correct build order
+# when building more than just this package. The devs explained to me that the 
+# official workaround (and the reason why they are using 'linux-firmware-any' 
+# of instead 'linux-firmware') is that one can simply install 'linux-firmware-none'
+# and the build system will be happy and everything will work.
+makedepends="$_depends_dev sed installkernel bc linux-headers openssl-dev diffutils linux-firmware-any"
 
 options="!strip"
 _config=${config:-config-lts.${CARCH}}
