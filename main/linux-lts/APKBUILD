@@ -78,7 +78,19 @@ ppc*) _carch="powerpc" ;;
 s390*) _carch="s390" ;;
 esac
 
+_compilerFlags="";
+
 prepare() {
+	# ask if the user wants to tune the compilation to the current CPU
+	while true; do
+	    read -p "Do you wish to optimize the code for the current CPU (march=native mtune=native)? [y/n] " yn
+	    case $yn in
+	        [Yy]* ) _compilerFlags="-O2 -march=native -mtune=native"; break;;
+	        [Nn]* ) break;;
+	        * ) echo "Please answer yes or no.";;
+	    esac
+	done
+
 	local _patch_failed=
 	cd "$srcdir"/linux-$_kernver
 	if [ "$_kernver" != "$pkgver" ]; then
@@ -127,16 +139,34 @@ oldconfig() {
 }
 
 build() {
-	# update the kernel makefile, forcing it to use -march and -mtune == native
-	sed -i 's/march=k8\|march=nocona\|mtune=generic/march=native mtune=native/' "$srcdir"/linux-$_kernver/arch/x86/Makefile
+	if [ ! -z "$_compilerFlags" ]; then
+		# some parts of the kernel makefile explicitly set march and mtune value.
+		# Here update it, forcing it to use -march and -mtune == native
+		# Unfortunately this is not really reversible in case the user
+		# stops the process in the middle
+		cp "$srcdir"/linux-$_kernver/arch/x86/Makefile "$srcdir"/linux-$_kernver/arch/x86/Makefile.alpino-bak
+		sed -i 's/march=k8\|march=nocona\|mtune=generic/march=native mtune=native/' "$srcdir"/linux-$_kernver/arch/x86/Makefile
+	else
+		# just to be safe, in case there is a Makefile.alpino-bak, assume it is the original and restore it
+		if [ -e "$srcdir"/linux-$_kernver/arch/x86/Makefile.alpino-bak ]; then
+			cp "$srcdir"/linux-$_kernver/arch/x86/Makefile.alpino-bak "$srcdir"/linux-$_kernver/arch/x86/Makefile
+		fi
+	fi
 
 	unset LDFLAGS
 	export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EPOCH})"
 	for i in $_flavors; do
 		cd "$srcdir"/build-$i.$CARCH
 		make ARCH="$_carch" CC="${CC:-gcc}" \
-			KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-Alpine"
+			KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-Alpine" \
+			KCFLAGS="$_compilerFlags" \
+			KCPPFLAGS="$_compilerFlags"
 	done
+
+	if [ ! -z "$_compilerFlags" ]; then
+		# restore the kernel makefile, in case we modified it
+		mv "$srcdir"/linux-$_kernver/arch/x86/Makefile.alpino-bak "$srcdir"/linux-$_kernver/arch/x86/Makefile
+	fi
 }
 
 _package() {
