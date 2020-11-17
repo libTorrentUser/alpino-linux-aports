@@ -2,7 +2,7 @@
 # Contributor: Natanael Copa <ncopa@alpinelinux.org>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=vala
-pkgver=0.48.7
+pkgver=0.48.11
 pkgrel=0
 pkgdesc="Compiler for the GObject type system"
 url="https://wiki.gnome.org/Projects/Vala"
@@ -30,4 +30,4 @@ package() {
 	make DESTDIR="$pkgdir" install
 }
 
-sha512sums="93ed6f98ff3be35d327794c5d81f30239c84838d49991b70dced1672f070e4675576da43b7555748d66ecae70102cd422e6af9b562f22bb34b40c07c73bac882  vala-0.48.7.tar.xz"
+sha512sums="6ddad88ab4d2a34352be9ce0a0c13dc3382ebcb494c08e2531a0195aad21a80db70e7dc3ffd2d27ef03a4ca30ac2bf31869521489ffd95fc520c4085362fc5e7  vala-0.48.11.tar.xz"

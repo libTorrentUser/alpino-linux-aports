@@ -2,7 +2,7 @@
 # Maintainer: Fabio Ribeiro <fabiorphp@gmail.com>
 pkgname=php7-pecl-timezonedb
 _pkgreal=timezonedb
-pkgver=2020.1
+pkgver=2020.4
 pkgrel=0
 pkgdesc="Timezone Database to be used with PHP's date and time functions."
 url="https://pecl.php.net/package/timezonedb"
@@ -32,4 +32,4 @@ package() {
 	echo "extension=$_pkgreal.so" > "$pkgdir"/etc/php7/conf.d/40_$_pkgreal.ini
 }
 
-sha512sums="31c38d5b25db921ec5be924ac85d9cf9dd2180c4e2d50e074a143dfdf9415a8c7579e96f7a768b305554bf1cb332b46f2c652fda7d2f1638502b995fc0679ca5  timezonedb-2020.1.tgz"
+sha512sums="d5c41c76b4b0b033464a4f086072d061504fc439c910c47a7077a0586b308cc37a4202ff9f418a39cee63534d55136d15a173bb94923160c0fa16bb33ac89a09  timezonedb-2020.4.tgz"

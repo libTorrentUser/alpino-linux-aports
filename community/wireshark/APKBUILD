@@ -3,7 +3,7 @@
 # Contributor: Jeremy Thomerson <jeremy@thomersonfamily.com>
 # Maintainer: Natanael Copa <ncopa@alpinelinux.org>
 pkgname=wireshark
-pkgver=3.2.4
+pkgver=3.2.7
 pkgrel=0
 pkgdesc="Network protocol analyzer"
 url="https://www.wireshark.org"
@@ -40,6 +40,14 @@ source="https://www.wireshark.org/download/src/wireshark-$pkgver.tar.xz
 	"
 
 # secfixes:
+#   3.2.7-r0:
+#     - CVE-2020-25863
+#     - CVE-2020-25862
+#     - CVE-2020-25866
+#   3.2.6-r0:
+#     - CVE-2020-17498
+#   3.2.5-r0:
+#     - CVE-2020-15466
 #   3.2.4-r0:
 #     - CVE-2020-13164
 #   3.2.3-r0:
@@ -164,14 +172,6 @@ source="https://www.wireshark.org/download/src/wireshark-$pkgver.tar.xz
 #     - CVE-2017-13765
 #     - CVE-2017-13766
 #     - CVE-2017-13767
-#   2.2.10-r0:
-#     - CVE-2017-15191
-#     - CVE-2017-15192
-#     - CVE-2017-15193
-#   2.2.9-r0:
-#     - CVE-2017-13765
-#     - CVE-2017-13766
-#     - CVE-2017-13767
 #   2.2.8-r0:
 #     - CVE-2017-11406
 #     - CVE-2017-11407
@@ -287,5 +287,5 @@ tshark() {
 	mv "$pkgdir"/usr/bin/tshark "$subpkgdir"/usr/bin/tshark
 }
 
-sha512sums="67d20a248c0f4e63a58fd3a4191ede75542e9cfd09b0baa5c0016f72a435527d8f95d34f2d35ef1957c1a9c66844d530162379bfcf9e51b64d0d220b381cb097  wireshark-3.2.4.tar.xz
+sha512sums="c17913fe6c193ccc6b0dbf86932d625a1f3b670aef805296e5db2639118218e06d513910ad50ab3926204f94a0010425b0d498176f987516d64fdd6a52d2517b  wireshark-3.2.7.tar.xz
 287159576be76fc8afbce450a53f969bbd519321e038c812b96857ca08c352052dbbfaa9208d54ed30d7a0c9ca4192b83c8865de60562c4490d99d75c61ede0b  fix-udpdump.patch"

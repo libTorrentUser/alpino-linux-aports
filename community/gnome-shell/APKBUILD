@@ -1,8 +1,8 @@
 # Contributor: Rasmus Thomsen <oss@cogitri.dev>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=gnome-shell
-pkgver=3.36.2
-pkgrel=4
+pkgver=3.36.6
+pkgrel=0
 pkgdesc="GNOME shell"
 url="https://wiki.gnome.org/Projects/GnomeShell"
 arch="all !s390x !ppc64le !mips !mips64"
@@ -33,7 +33,6 @@ makedepends="gnome-desktop-dev>=3.35.91
 	gcr-dev
 	gjs-dev>=1.64.0
 	mutter-dev>=3.36.0
-	libcroco-dev
 	pulseaudio-dev
 	evolution-data-server-dev evolution-dev
 	python3
@@ -62,6 +61,10 @@ source="https://download.gnome.org/sources/gnome-shell/${pkgver%.*}/gnome-shell-
 	disable-telepathy-integration.patch"
 options="!check" # Tests have circular dependency 'gnome-shell <-> gdm'
 
+# secfixes:
+#   3.36.5-r0:
+#     - CVE-2020-17489
+
 build() {
 	meson \
 		--prefix=/usr \
@@ -84,5 +87,5 @@ package() {
 	setcap cap_sys_nice+ep "$pkgdir"/usr/bin/gnome-shell
 }
 
-sha512sums="5f4950e5570863f7951423286c066376a9d8221a99929a2ca26493f21f9230d89ad67ca48d9e94aa47ccc3fd83490edffbc2d4c5fd2f0d2c2ff6420975cdbb85  gnome-shell-3.36.2.tar.xz
+sha512sums="54354bf2bddba5f414c84df720ece70f4d7a72dcccde1dc02470c135ae0a9662ef5cd92a5fac4c788504b0b378b45d2b54088044934d1e5aa13928173185773e  gnome-shell-3.36.6.tar.xz
 2ca70115fab957fdf276b7f0772786e1afd56b0b22bcfd92f5b5f1d29676dc97c19cfb079434d0dbf7b459f1d133dbd8d1faa0d88f7b94846040a23856f951f8  disable-telepathy-integration.patch"

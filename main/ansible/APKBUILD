@@ -3,7 +3,7 @@
 # Contributor: Takuya Noguchi <takninnovationresearch@gmail.com>
 # Maintainer: Fabian Affolter <fabian@affolter-engineering.ch>
 pkgname=ansible
-pkgver=2.9.9
+pkgver=2.9.14
 pkgrel=0
 pkgdesc="A configuration-management, deployment, task-execution, and multinode orchestration framework"
 url="https://ansible.com/"
@@ -18,6 +18,11 @@ source="$pkgname-$pkgver.tar.gz::https://releases.ansible.com/ansible/ansible-$p
 	"
 
 # secfixes:
+#   2.9.13-r0:
+#     - CVE-2019-14846
+#     - CVE-2020-14330
+#     - CVE-2020-14332
+#     - CVE-2020-14365
 #   2.9.7-r0:
 #     - CVE-2019-3828
 #     - CVE-2020-1733
@@ -27,12 +32,10 @@ source="$pkgname-$pkgver.tar.gz::https://releases.ansible.com/ansible/ansible-$p
 #     - CVE-2020-10691
 #   2.9.6-r0:
 #     - CVE-2020-1737
-#     - CVE-2020-1739
 #   2.9.3-r0:
 #     - CVE-2019-14904
 #     - CVE-2019-14905
 #   2.8.6-r0:
-#     - CVE-2019-14846
 #     - CVE-2019-14856
 #     - CVE-2019-14858
 #   2.8.4-r0:
@@ -66,6 +69,6 @@ package() {
 	install -m644 README.rst "$pkgdir"/usr/share/doc/$pkgname
 }
 
-sha512sums="327c5ece277096f71f10fec2b33a8d2c94ee59b0e22b15bb5ca449da2331b8158239bdbc8e3afd093af358a787f410c7c2e0942010de65a8d9c8719cf83e4abd  ansible-2.9.9.tar.gz
+sha512sums="1c69970629619814c02ff10e9d857d36ddc3ab6b4ff3f4e66fb0ea0b9a2fd5bc2de2c9d550427bcf3c9387d9e0138aff100c9fc1b92838871d7d8fe8a5cca8bd  ansible-2.9.14.tar.gz
 f44f1492495abe092cd9f91669ccfee65748f43663571361de97c3b1c5c1219d355aa7236179decb73446376018fa81aace7eaeb8c10a83d3cf4e006508533dd  add-lxc-container_shell-option.patch
 d6aa6827acee61d857444a00364f9b057a216a0a6f5217f353e8b8e0118db7aee54b7578a3fb31cb43bfa8e0709db8d43dcdb819eb28a457a692359887dad115  0001-new-module-lbu.patch"
