@@ -12,7 +12,7 @@ build_alpino_virt() {
 		cp -a "${ALPINE_LINUX_INITIALIZE_DIR}/"* $_destDir
 
 		# ensure init.sh is executable
-		chmod +x $_destDir/init.sh
+		chmod +x "$_destDir/init.sh"
 	fi
 }
 
